@@ -1,0 +1,85 @@
+<edmx:Edmx
+    xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx"
+    xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"
+    xmlns:sap="http://www.sap.com/Protocols/SAPData" Version="1.0">
+    <edmx:DataServices m:DataServiceVersion="2.0">
+        <Schema
+            xmlns="http://schemas.microsoft.com/ado/2008/09/edm" Namespace="YPO_FEEDBACK_SRV" xml:lang="en" sap:schema-version="1">
+            <EntityType Name="HeaderDetail" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Ebeln"/>
+                </Key>
+                <Property Name="Ebeln" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Ebeln" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="CreatedByID" Type="Edm.String" MaxLength="12" sap:unicode="false" sap:label="Created By" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Value" Type="Edm.Decimal" Precision="15" Scale="14" sap:unicode="false" sap:label="Target Value" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Currency" Type="Edm.String" MaxLength="5" sap:unicode="false" sap:label="Currency" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false" sap:semantics="currency-code"/>
+            </EntityType>
+            <EntityType Name="POComm" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Seqnr"/>
+                    <PropertyRef Name="Ebeln"/>
+                    <PropertyRef Name="Uname"/>
+                </Key>
+                <Property Name="Seqnr" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:label="Seqnr" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Ebeln" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Ebeln" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Uname" Type="Edm.String" Nullable="false" MaxLength="12" sap:unicode="false" sap:label="Uname" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Fname" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:label="Fname" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Ycomm" Type="Edm.String" Nullable="false" MaxLength="255" sap:unicode="false" sap:label="Ycomm" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Ydate" Type="Edm.String" MaxLength="10" sap:unicode="false" sap:label="Ydate" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Ytime" Type="Edm.String" MaxLength="8" sap:unicode="false" sap:label="Ytime" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Rname" Type="Edm.String" Nullable="false" MaxLength="12" sap:unicode="false" sap:label="Rname" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="RFname" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:label="RFname" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+            </EntityType>
+            <EntityType Name="PONum" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Ebeln"/>
+                </Key>
+                <Property Name="Ebeln" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Ebeln" sap:creatable="false" sap:updatable="false"/>
+                <Property Name="Uname" Type="Edm.String" Nullable="false" MaxLength="12" sap:unicode="false" sap:label="Uname" sap:creatable="false" sap:updatable="false" sap:sortable="false"/>
+                <NavigationProperty Name="POCommSet" Relationship="YPO_FEEDBACK_SRV.POToCommNav" FromRole="FromRole_POToCommNav" ToRole="ToRole_POToCommNav"/>
+                <NavigationProperty Name="HeaderDetail" Relationship="YPO_FEEDBACK_SRV.POToHeaderNav" FromRole="FromRole_POToHeaderNav" ToRole="ToRole_POToHeaderNav"/>
+            </EntityType>
+            <Association Name="POToCommNav" sap:content-version="1">
+                <End Type="YPO_FEEDBACK_SRV.PONum" Multiplicity="1" Role="FromRole_POToCommNav"/>
+                <End Type="YPO_FEEDBACK_SRV.POComm" Multiplicity="*" Role="ToRole_POToCommNav"/>
+                <ReferentialConstraint>
+                    <Principal Role="FromRole_POToCommNav">
+                        <PropertyRef Name="Ebeln"/>
+                    </Principal>
+                    <Dependent Role="ToRole_POToCommNav">
+                        <PropertyRef Name="Ebeln"/>
+                    </Dependent>
+                </ReferentialConstraint>
+            </Association>
+            <Association Name="POToHeaderNav" sap:content-version="1">
+                <End Type="YPO_FEEDBACK_SRV.PONum" Multiplicity="1" Role="FromRole_POToHeaderNav"/>
+                <End Type="YPO_FEEDBACK_SRV.HeaderDetail" Multiplicity="1" Role="ToRole_POToHeaderNav"/>
+                <ReferentialConstraint>
+                    <Principal Role="FromRole_POToHeaderNav">
+                        <PropertyRef Name="Ebeln"/>
+                    </Principal>
+                    <Dependent Role="ToRole_POToHeaderNav">
+                        <PropertyRef Name="Ebeln"/>
+                    </Dependent>
+                </ReferentialConstraint>
+            </Association>
+            <EntityContainer Name="YPO_FEEDBACK_SRV_Entities" m:IsDefaultEntityContainer="true" sap:supported-formats="atom json xlsx">
+                <EntitySet Name="HeaderInfoSet" EntityType="YPO_FEEDBACK_SRV.HeaderDetail" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+                <EntitySet Name="POCommSet" EntityType="YPO_FEEDBACK_SRV.POComm" sap:updatable="false" sap:deletable="false" sap:content-version="1"/>
+                <EntitySet Name="PONumSet" EntityType="YPO_FEEDBACK_SRV.PONum" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1"/>
+                <AssociationSet Name="POToHeaderNavSet" Association="YPO_FEEDBACK_SRV.POToHeaderNav" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="PONumSet" Role="FromRole_POToHeaderNav"/>
+                    <End EntitySet="HeaderInfoSet" Role="ToRole_POToHeaderNav"/>
+                </AssociationSet>
+                <AssociationSet Name="POToCommNavSet" Association="YPO_FEEDBACK_SRV.POToCommNav" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+                    <End EntitySet="PONumSet" Role="FromRole_POToCommNav"/>
+                    <End EntitySet="POCommSet" Role="ToRole_POToCommNav"/>
+                </AssociationSet>
+            </EntityContainer>
+            <atom:link
+                xmlns:atom="http://www.w3.org/2005/Atom" rel="self" href="./sap/YPO_FEEDBACK_SRV/$metadata"/>
+                <atom:link
+                    xmlns:atom="http://www.w3.org/2005/Atom" rel="latest-version" href="./sap/YPO_FEEDBACK_SRV/$metadata"/>
+                </Schema>
+            </edmx:DataServices>
+        </edmx:Edmx>
