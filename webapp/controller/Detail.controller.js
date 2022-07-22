@@ -164,6 +164,32 @@ sap.ui.define([
 	this.oSubmitDialog.open();
 
 },
+                                handleLinkPO: function(oEvent) {
+                                                //alert("You click on PO");
+                                                // display dialog to display PO Details
+                                                  var PoNo;
+                                                  PoNo = "";
+                                                 var gFlag = "X";
+                                                  
+                                                  PoNo = this.getView().byId("poNumber").getText();
+
+                                                  var oCrossAppNavigator = sap.ushell.Container.getService("CrossApplicationNavigation"); // get a handle on the global XAppNav service
+                                                  var hash = (oCrossAppNavigator && oCrossAppNavigator.hrefForExternal({
+                                                  target: {
+                                                  semanticObject: "ZPTML_PO_01",
+                                                  action: "display"
+                                                  },
+                                                  params: {
+                                                  "poNumber": PoNo
+                                                  }
+                                                  })) || ""; // generate the Hash to display a Supplier
+                                                  oCrossAppNavigator.toExternal({
+                                                  target: {
+                                                  shellHash: hash
+                                                  }
+                                                  }); // navigate to Supplier application
+                                },
+
 
 			/**
 			 * Updates the item count within the line item table's header
