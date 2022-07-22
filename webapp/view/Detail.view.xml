@@ -1,0 +1,45 @@
+<mvc:View controllerName="feedback.POFeedack.controller.Detail" xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic"
+	xmlns:footerbar="sap.ushell.ui.footerbar">
+	<semantic:DetailPage id="page" navButtonPress="onNavBack" showNavButton="{device>/system/phone}" title="{i18n>detailTitle}"
+		busy="{detailView>/busy}" busyIndicatorDelay="{detailView>/delay}">
+		<semantic:content>
+			<ObjectHeader id="objectHeader" binding="{HeaderDetail}" titlePress="handleLinkPO" title="{Ebeln}" titleActive="true">
+				<ObjectAttribute text="Created by: {CreatedByID}"/>
+				<ObjectAttribute text="PO Number: {Ebeln}" ariaHasPopup="Dialog"/>
+				<ObjectAttribute text="Price: {Value}"/>
+				<ObjectAttribute text="Currency: {Currency}"/>
+			</ObjectHeader>
+			<IconTabBar id="iconTabBar" class="sapUiResponsiveContentPadding">
+				<items>
+					<IconTabFilter id="iconTabBarFilter1" icon="sap-icon://discussion" tooltip="{i18n>detailIconTabBarInfo}">
+						<content>
+							<Button type="Accept" text="Post Comment" icon="sap-icon://post" press="onPress" enabled="{path:'HeaderDetail/isapproved'}"
+								ariaDescribedBy="acceptButtonDescription genericButtonDescription">
+								<layoutData>
+									<FlexItemData growFactor="1"/>
+								</layoutData>
+							</Button>
+							<List headerText="Comments" items="{POCommSet}">
+								<FeedListItem sender="{Fname}" icon="{AuthorPicUrl}" senderPress="onPress" iconPress="onPress" iconActive="false" senderActive="flase"
+									showIcon="false" iconDensityAware="false" info="{path:'Ydate',formatter:'.formatter.formatDate'}"
+									timestamp="{path:'Ytime', formatter:'.formatter.formatTime'}" text="{Ycomm} &lt;strong&gt; @{RFname} &lt;/strong&gt;"
+									convertLinksToAnchorTags="All" actions="{path: 'Actions', templateShareable: false}">
+									<FeedListItemAction text="{Text}" icon="{Icon}" key="{Key}" press="onActionPressed"/>
+								</FeedListItem>
+							</List>
+						</content>
+					</IconTabFilter>
+				</items>
+			</IconTabBar>
+		</semantic:content>
+		<semantic:sendEmailAction>
+			<semantic:SendEmailAction id="shareEmail" press="onShareEmailPress"/>
+		</semantic:sendEmailAction>
+		<semantic:shareInJamAction>
+			<semantic:ShareInJamAction id="shareInJam" visible="{FLP>/isShareInJamActive}" press="onShareInJamPress"/>
+		</semantic:shareInJamAction>
+		<semantic:saveAsTileAction>
+			<footerbar:AddBookmarkButton id="shareTile" title="{detailView>/saveAsTileTitle}"/>
+		</semantic:saveAsTileAction>
+	</semantic:DetailPage>
+</mvc:View>
