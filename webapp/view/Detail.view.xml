@@ -3,19 +3,17 @@
 	<semantic:DetailPage id="page" navButtonPress="onNavBack" showNavButton="{device>/system/phone}" title="{i18n>detailTitle}"
 		busy="{detailView>/busy}" busyIndicatorDelay="{detailView>/delay}">
 		<semantic:content>
-			<ObjectHeader id="objectHeader" binding="{HeaderDetail}" 	titlePress="handleLinkPO" title="{Ebeln}" titleActive="true">
+			<ObjectHeader id="objectHeader" binding="{HeaderDetail}" titlePress="handleLinkPO" title="{Ebeln}" titleActive="true">
 				<ObjectAttribute text="Created by: {CreatedByID}"/>
 				<ObjectAttribute text="PO Number: {Ebeln}" ariaHasPopup="Dialog"/>
 				<ObjectAttribute text="Price: {Value}"/>
 				<ObjectAttribute text="Currency: {Currency}"/>
-				                
-
 			</ObjectHeader>
 			<IconTabBar id="iconTabBar" class="sapUiResponsiveContentPadding">
 				<items>
 					<IconTabFilter id="iconTabBarFilter1" icon="sap-icon://discussion" tooltip="{i18n>detailIconTabBarInfo}">
 						<content>
-							<Button type="Accept" text="Post Comment" icon="sap-icon://post" press="onPress"
+							<Button type="Accept" text="Post Comment" icon="sap-icon://post" press="onPress" enabled="{path:'HeaderDetail/isapproved'}"
 								ariaDescribedBy="acceptButtonDescription genericButtonDescription">
 								<layoutData>
 									<FlexItemData growFactor="1"/>
